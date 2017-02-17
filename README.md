@@ -1,37 +1,56 @@
-## Welcome to GitHub Pages
+---
+layout: default
+---
+<section class="previews">
+  <div>
+    {% for post in paginator.posts %}
+      <figure class="absolute-bg preview__img" style="background-image: url('{{ post.image }}');"></figure>
+    {% endfor %}
+    <div class="previews__container">
+      <span>Welcome to</span>
+      <h1>{{ site.title }}</h1>
+    </div>
+  </div>
 
-You can use the [editor on GitHub](https://github.com/scuttletoes/my-main-video-photo-website/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+  <div>
+    <header>
+      <ul class="tabs">
+        <li class="tabs__item">Posts</li>
+        <li class="tabs__item">Categories</li>
+      </ul>
+    </header>
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+    <div class="tab">
+      <ul itemscope itemtype="http://schema.org/Blog">
+        {% for post in paginator.posts %}
+          <li class="preview" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+            <a class="preview__link" href="{{ post.url | prepend: site.baseurl }}" itemprop="url">
+              <span class="preview__date" itemprop="datePublished" datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %-d, %Y" }}</span>
+              <h2 class="preview__header" itemprop="name">{{ post.title }}</h2>
+              <p class="preview__excerpt" itemprop="description">{{ post.content | strip_html | truncatewords: 30 }}</p>
+              <span class="preview__more">Read More</span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
 
-### Markdown
+      {% if paginator.total_pages > 1 %}
+        <div class="pagination">
+          {% if paginator.previous_page %}
+            <a href="{{ paginator.previous_page_path | prepend: site.baseurl }}">Previous</a>
+          {% endif %}
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+          {% if paginator.next_page %}
+            <a href="{{ paginator.next_page_path | prepend: site.baseurl }}">Next</a>
+          {% endif %}
+        </div>
+      {% endif %}
 
-```markdown
-Syntax highlighted code block
+      {% include archive-link.html %}
+    </div>
 
-# Header 1
-## Header 2
-### Header 3
+    {% include categories-tab.html %}
 
-- Bulleted
-- List
+  </div>
 
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/scuttletoes/my-main-video-photo-website/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+</section>
